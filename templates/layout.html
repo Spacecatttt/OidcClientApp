@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OIDC Test Client</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="brand">OIDC Tester</a>
+        {% if user %}
+        <div>
+            <span style="margin-right: 1rem; font-size: 0.9rem;">{{ user.name or user.email }}</span>
+            <a href="/logout" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">Logout</a>
+        </div>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

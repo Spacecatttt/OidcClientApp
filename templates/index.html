@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h1>Authentication Status</h1>
+            {% if user %}
+                <span class="badge">Authenticated</span>
+            {% else %}
+                <span class="badge" style="background: #94a3b8;">Not Logged In</span>
+            {% endif %}
+        </div>
+
+        {% if user %}
+            <p>You have successfully exchanged an authorization code for an ID token.</p>
+            <h2>User Claims</h2>
+            <pre>{{ user | tojson(indent=4) }}</pre>
+            <div style="margin-top: 1.5rem;">
+                <a href="/logout" class="btn btn-outline">End Session</a>
+            </div>
+        {% else %}
+            <p>Click below to start the OIDC Authorization Code Flow using the settings below.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="/login" class="btn btn-primary">Login with IdentityServer</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if debug %}
+    <div class="card debug-panel">
+        <h2 style="border-color: #fcd34d; color: #92400e;">Developer Configuration</h2>
+        <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+            <strong>Note:</strong> Clicking "Save" will clear your current session.
+        </p>
+
+        <form action="/update_config" method="POST">
+            <div class="form-group">
+                <label>Issuer URL</label>
+                <input type="text" name="issuer_url" value="{{ config.ISSUER_URL }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Client ID</label>
+                <input type="text" name="client_id" value="{{ config.CLIENT_ID }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Client Secret</label>
+                <input type="text" name="client_secret" value="{{ config.CLIENT_SECRET }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Scopes</label>
+                <input type="text" name="scopes" value="{{ config.SCOPES }}" required>
+            </div>
+
+            <div style="text-align: right; margin-top: 1rem;">
+                <button type="submit" class="btn" style="background: #d97706; color: white; border: none; cursor: pointer;">
+                    Save Configuration
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+{% endblock %}
